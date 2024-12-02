@@ -27,8 +27,8 @@ pipeline {
       steps {
         dir("${env.WORKSPACE}") {
           sh """
-          docker build -t nakwonbea/spring-petclinic:$BUILD_NUMBER .
-          docker tag nakwonbea/spring-petclinic:$BUILD_NUMBER nakwonbea/spring-petclinic:latest
+          docker build -t wonnack/spring-petclinic:$BUILD_NUMBER .
+          docker tagwonnack/spring-petclinic:$BUILD_NUMBER wonnack/spring-petclinic:latest
           """
         }
       }
@@ -38,7 +38,7 @@ pipeline {
       steps {
         sh """
         echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-        docker push nakwonbea/spring-petclinic:latest
+        docker push wonnack/spring-petclinic:latest
         """
       }
     }
@@ -46,8 +46,8 @@ pipeline {
     stage ('Remove Docker Image') {
       steps {
         sh """
-        docker rmi nakwonbea/spring-petclinic:$BUILD_NUMBER 
-        docker rmi nakwonbea/spring-petclinic:latest
+        docker rmi wonnack/spring-petclinic:$BUILD_NUMBER 
+        docker rmi wonnack/spring-petclinic:latest
         """
       }
     }
@@ -59,7 +59,7 @@ pipeline {
         execCommand: '''
         docker rm -f $(docker ps -aq)
         docker rmi $(docker images -q)
-        docker run -d -p 80:8080 --name spring-petclinic nakwonbea/spring-petclinic:latest
+        docker run -d -p 80:8080 --name spring-petclinic wonnack/spring-petclinic:latest
         ''', 
         execTimeout: 120000, 
         flatten: false, 
