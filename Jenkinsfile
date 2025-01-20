@@ -40,8 +40,8 @@ pipeline {
           docker tag wonnack/spring-petclinic:$BUILD_NUMBER wonnack/spring-petclinic:latest
           """
         }
-        }
       }
+    }
 
       // DockerHub Login 이미지 푸쉬
       stage('Docker Login') {
