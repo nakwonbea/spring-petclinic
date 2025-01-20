@@ -31,9 +31,9 @@ pipeline {
       }
     }
       //docker 이미지 생성
-      stage('Docker Image build') {
-        steps {
-          echo 'Docker Image build'
+      stage('Docker Image Build') {
+       steps {
+        echo 'Docker Image Build'
         dir("${env.WORKSPACE}") {
           sh """
           docker build -t wonnack/spring-petclinic:$BUILD_NUMBER .
@@ -47,20 +47,20 @@ pipeline {
       stage('Docker Login') {
         steps {
           sh """
-          echo SOOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS USR --password-stdin
+          echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
           docker push wonnack/spring-petclinic:latest
           """
         }
       }
       // Docker Image 삭제
       stage('Remove Docker Image') {
-        steps {
-          sh """
-          docker rmi wonnack/spring-petclinic:$BUILD_NUMBER
-          docker rmi wonnack/spring-petclinic:latest
-          """
-        }
+      steps {
+        sh """
+        docker rmi wonnack/spring-petclinic:$BUILD_NUMBER
+        docker rmi wonnack/spring-petclinic:latest
+        """
       }
+    }
 
 
 
