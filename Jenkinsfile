@@ -23,6 +23,48 @@ pipeline {
           branch: 'main'
         }
       }
+      //Maver 빌드 작업
+      stage('Maver Build') {
+      steps {
+        echo 'Maver Build'
+        sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+      }
+      }
+      //docker 이미지 생성
+      stage('Docker Image build') {
+        steps {
+          echo 'Docker Image build'
+        dir("${env.WORKSPACE}") {
+          sh """
+          docker build -t wonnack/spring-petclinic:$BUILD_NUMBER .
+          docker tag wonnack/spring-petclinic:$BUILD_NUMBER wonnack/spring-petclinic:latest
+          """
+        }
+        }
+      }
+
+      // DockerHub Login 이미지 푸쉬
+      stage('Docker Login') {
+        steps {
+          sh """
+          echo SOOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS USR --password-stdin
+          docker push wonnack/spring-petclinic:latest
+          """
+        }
+      }
+      // Docker Image 삭제
+      stage('Remove Docker Image') {
+        steps {
+          sh """
+          docker rmi wonnack/spring-petclinic:$BUILD_NUMBER
+          docker rmi wonnack/spring-petclinic: latest
+          """
+        }
+      }
+
+
+
+    
     }
   }
 
