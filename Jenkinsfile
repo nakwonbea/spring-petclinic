@@ -18,7 +18,7 @@ pipeline {
     // GitHub에서 Jenkins로 소스코드 복제
     stage('Git Clone') {
       steps {
-        stage('Git Clone'){
+        echo 'Git Clone'
         git url: 'https://github.com/nakwonbea/spring-petclinic.git',
           branch: 'main'
         }
