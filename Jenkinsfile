@@ -25,11 +25,11 @@ pipeline {
       }
       //Maver 빌드 작업
       stage('Maver Build') {
-      steps {
-        echo 'Maver Build'
-        sh 'mvn -Dmaven.test.failure.ignore=true clean package'
+        steps {
+          echo 'Maver Build'
+          sh 'mvn -Dmaven.test.failure.ignore=true clean package'
       }
-      }
+    }
       //docker 이미지 생성
       stage('Docker Image build') {
         steps {
